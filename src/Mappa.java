@@ -14,8 +14,8 @@ public class Mappa {
         this.dimensione = dimensione;
         int minePiazzate = 0;
 
-        for (int i = 0; i < mappa.length; i++) {
-            for (int j = 0; j < mappa[0].length; j++) {
+        for (int i = 0; i < this.dimensione; i++) {
+            for (int j = 0; j < this.dimensione; j++) {
                 mappa[i][j] = new Casella(minePiazzate < this.numeroMine);
                 if (mappa[i][j].isMina()) {
                     minePiazzate++;
@@ -31,7 +31,6 @@ public class Mappa {
                 Casella temp = mappa[i][j];
                 mappa[i][j] = mappa[newI][newJ];
                 mappa[newI][newJ] = temp;
-
             }
         }
 
@@ -47,32 +46,28 @@ public class Mappa {
         return dimensione * dimensione - numeroMine - caselleScoperte <= 0;
     }
 
-    public boolean scopriCasella(int i, int j) {
+    public void scopriCasella(int i, int j) {
 
-        boolean iOk = 0 <= i && i < dimensione;
-        boolean jOk = 0 <= j && j < dimensione;
-
-        if (iOk && jOk && !mappa[i][j].isScoperta()) {
+        if (isCoordInMap(i,j) && !mappa[i][j].isScoperta()) {
 
             mappa[i][j].setScoperta(true);
             caselleScoperte++;
 
             if (mappa[i][j].getMineCircostanti() == 0) {
+
                 scopriCasella(i - 1, j - 1);
                 scopriCasella(i - 1, j);
                 scopriCasella(i - 1, j + 1);
+
                 scopriCasella(i, j - 1);
                 scopriCasella(i, j + 1);
+
                 scopriCasella(i + 1, j - 1);
                 scopriCasella(i + 1, j);
                 scopriCasella(i + 1, j + 1);
             }
 
-            return mappa[i][j].isMina();
-
         }
-
-        return false;
 
     }
 
@@ -112,25 +107,20 @@ public class Mappa {
 
     private int calcolaMineCircostanti(int i, int j) {
 
-        return testMina(i - 1, j - 1) +
+        return calcolaMineCircostantiAux(i - 1, j - 1) +
+                calcolaMineCircostantiAux(i - 1, j) +
+                calcolaMineCircostantiAux(i - 1, j + 1) +
 
-                testMina(i - 1, j) +
+                calcolaMineCircostantiAux(i, j - 1) +
+                calcolaMineCircostantiAux(i, j + 1) +
 
-                testMina(i - 1, j + 1) +
-
-                testMina(i, j - 1) +
-
-                testMina(i, j + 1) +
-
-                testMina(i + 1, j - 1) +
-
-                testMina(i + 1, j) +
-
-                testMina(i + 1, j + 1);
+                calcolaMineCircostantiAux(i + 1, j - 1) +
+                calcolaMineCircostantiAux(i + 1, j) +
+                calcolaMineCircostantiAux(i + 1, j + 1);
 
     }
 
-    private int testMina(int i, int j) {
+    private int calcolaMineCircostantiAux(int i, int j) {
         return isCoordInMap(i, j) && mappa[i][j].isMina() ? 1 : 0;
     }
 
@@ -140,5 +130,9 @@ public class Mappa {
                 this.scopriCasella(i, j);
             }
         }
+    }
+
+    public boolean isMina(int i, int j) {
+        return isCoordInMap(i,j) && mappa[i][j].isMina();
     }
 }

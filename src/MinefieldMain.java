@@ -34,7 +34,8 @@ public class MinefieldMain {
             System.out.print("Colonna: ");
             int colonna = scanner.nextInt();
 
-            boolean casellaMina = mappa.scopriCasella(riga, colonna);
+            mappa.scopriCasella(riga, colonna);
+            boolean casellaMina = mappa.isMina(riga,colonna);
 
             if (casellaMina) {
                 System.out.println("KABOOM!!!");
