@@ -1,67 +1,68 @@
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class MinefieldMain {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
 
         Scanner scanner = new Scanner(System.in);
 
-        int dimensione;
+        int size;
 
         do {
-            System.out.print("Dimensione del campo minato (2-20): ");
-            dimensione = scanner.nextInt();
-        } while (!(2 <= dimensione && dimensione <= 20));
+            System.out.print("Minefield size (2-20): ");
+            size = scanner.nextInt();
+        } while (!(2 <= size && size <= 20));
 
-        int numeroMine;
+        int minesNumber;
         do {
-            System.out.print("Numero delle mine (1+): ");
-            numeroMine = scanner.nextInt();
-        } while (!(1 <= numeroMine));
+            System.out.print("Mines number (1+): ");
+            minesNumber = scanner.nextInt();
+        } while (!(1 <= minesNumber));
 
-        LocalDateTime inizio = LocalDateTime.now();
-        Mappa mappa = new Mappa(dimensione, numeroMine);
-        boolean partitaInCorso = true;
+        LocalDateTime beginTime = LocalDateTime.now();
+        GameMap gameMap = new GameMap(size, minesNumber);
+        boolean gameInProgress = true;
 
         do {
 
-            mappa.printMappa();
-            System.out.print("Riga: ");
-            int riga = scanner.nextInt();
-            System.out.print("Colonna: ");
-            int colonna = scanner.nextInt();
+            gameMap.printMap();
+            System.out.print("Row: ");
+            int row = scanner.nextInt();
+            System.out.print("Col: ");
+            int col = scanner.nextInt();
 
-            mappa.scopriCasella(riga, colonna);
-            boolean casellaMina = mappa.isMina(riga,colonna);
+            gameMap.openCell(row, col);
+            boolean minedCell = gameMap.isMine(row,col);
 
-            if (casellaMina) {
+            if (minedCell) {
                 System.out.println("KABOOM!!!");
-                partitaInCorso = false;
+                gameInProgress = false;
             }
 
-            if (partitaInCorso && mappa.nonCiSonoCaselleDaScoprire()) {
-                partitaInCorso = false;
-                System.out.println("VITTORIA!!!");
+            if (gameInProgress && gameMap.noMoreCellsToOpen()) {
+                gameInProgress = false;
+                System.out.println("VICTORY!!!");
 
             }
 
-            long secondiTrascorsi = ChronoUnit.SECONDS.between(inizio, LocalDateTime.now());
+            long elapsedSeconds = ChronoUnit.SECONDS.between(beginTime, LocalDateTime.now());
 
-            long secondiTrascorsiPrint = secondiTrascorsi % 60;
-            long minutiTrascorsiPrint = secondiTrascorsi / 60;
+            long elapsedSecondsPrint = elapsedSeconds % 60;
+            long elapsedMinutesPrint = elapsedSeconds / 60;
 
 
-            System.out.println("Tempo Trascorso: " + minutiTrascorsiPrint + " minuti e " + secondiTrascorsiPrint + " secondi");
+            System.out.println("Elapsed time: " + elapsedMinutesPrint + " minutes and" + elapsedSecondsPrint + " seconds");
 
-        } while (partitaInCorso);
+        } while (gameInProgress);
 
-        if (!partitaInCorso) {
-            mappa.scopriMappa();
-            mappa.printMappa();
+        if (!gameInProgress) {
+            gameMap.openMap();
+            gameMap.printMap();
         }
+
+        scanner.close();
 
 
     }
