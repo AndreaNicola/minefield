@@ -37,13 +37,13 @@ public class MinefieldMain {
             boolean minedCell = gameMap.isMine(row,col);
 
             if (minedCell) {
-                System.out.println("KABOOM!!!");
+                System.out.println(Colors.ANSI_RED+"KABOOM!!!"+Colors.ANSI_RESET);
                 gameInProgress = false;
             }
 
             if (gameInProgress && gameMap.noMoreCellsToOpen()) {
                 gameInProgress = false;
-                System.out.println("VICTORY!!!");
+                System.out.println(Colors.ANSI_YELLOW+"VICTORY!!!"+Colors.ANSI_RESET);
 
             }
 
@@ -53,7 +53,7 @@ public class MinefieldMain {
             long elapsedMinutesPrint = elapsedSeconds / 60;
 
 
-            System.out.println("Elapsed time: " + elapsedMinutesPrint + " minutes and" + elapsedSecondsPrint + " seconds");
+            System.out.println("Elapsed time: " + elapsedMinutesPrint + " minutes and " + elapsedSecondsPrint + " seconds");
 
         } while (gameInProgress);
 
