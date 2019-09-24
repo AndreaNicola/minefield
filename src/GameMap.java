@@ -101,7 +101,7 @@ public class GameMap {
         }
     }
 
-    private boolean isCoordInMap(int i, int j) {
+    public boolean isCoordInMap(int i, int j) {
         return 0 <= i && i < size && 0 <= j && j < size;
     }
 

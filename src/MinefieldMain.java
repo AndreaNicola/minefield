@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MinefieldMain {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -27,23 +27,29 @@ public class MinefieldMain {
 
         do {
 
+
             gameMap.printMap();
-            System.out.print("Row: ");
-            int row = scanner.nextInt();
-            System.out.print("Col: ");
-            int col = scanner.nextInt();
+
+            int row, col;
+            do {
+                System.out.print("Row: ");
+                row = scanner.nextInt();
+                System.out.print("Col: ");
+                col = scanner.nextInt();
+            } while (!gameMap.isCoordInMap(row, col));
+
 
             gameMap.openCell(row, col);
-            boolean minedCell = gameMap.isMine(row,col);
+            boolean minedCell = gameMap.isMine(row, col);
 
             if (minedCell) {
-                System.out.println(Colors.ANSI_RED+"KABOOM!!!"+Colors.ANSI_RESET);
+                System.out.println(Colors.ANSI_RED + "KABOOM!!!" + Colors.ANSI_RESET);
                 gameInProgress = false;
             }
 
             if (gameInProgress && gameMap.noMoreCellsToOpen()) {
                 gameInProgress = false;
-                System.out.println(Colors.ANSI_YELLOW+"VICTORY!!!"+Colors.ANSI_RESET);
+                System.out.println(Colors.ANSI_YELLOW + "VICTORY!!!" + Colors.ANSI_RESET);
 
             }
 
