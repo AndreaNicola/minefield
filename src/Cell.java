@@ -1,7 +1,7 @@
 public class Cell {
 
     private final boolean mine;
-    private boolean open = false;
+    private boolean open;
     private int surroundingMines;
 
     public Cell(boolean mine) {
